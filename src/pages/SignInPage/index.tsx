@@ -1,8 +1,27 @@
-import { Button, Card, Container, useDisclosure } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Container,
+  FormControl,
+  FormLabel,
+  Heading,
+  Icon,
+  IconButton,
+  Image,
+  Input,
+  InputGroup,
+  InputRightElement,
+  useDisclosure,
+  VStack,
+} from '@chakra-ui/react'
 import { signIn } from 'aws-amplify/auth'
 import { useState, type FormEvent } from 'react'
-import { getErrorMessage } from '../../utils'
+import FilterEasyLogo from '../../assets/logos/filtereasy-logo-2x.png'
 import { Alert } from '../../components'
+import { getErrorMessage } from '../../utils'
 
 interface SignInFormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement
@@ -16,11 +35,13 @@ interface SignInForm extends HTMLFormElement {
 export const SignInPage = () => {
   const { isOpen, onClose, onOpen } = useDisclosure({ defaultIsOpen: false })
   const [isLoading, setIsLoading] = useState(false)
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (event: FormEvent<SignInForm>) => {
     event.preventDefault()
     setIsLoading(true)
+    onClose()
 
     const form = event.currentTarget
     // ... validate inputs
@@ -38,21 +59,73 @@ export const SignInPage = () => {
     }
   }
 
+  const handlePasswordVisibility = () => {
+    setIsPasswordVisible((prevState) => !prevState)
+  }
+
   return (
     <Container>
-      <Card px={4} py={6}>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="email">Email:</label>
-          <input type="text" id="email" name="email" />
-          <label htmlFor="password">Password:</label>
-          <input type="password" id="password" name="password" />
-          {error && isOpen && (
-            <Alert description={error} status="error" onClose={onClose} />
-          )}
-          <Button type="submit" width="full" isLoading={isLoading}>
-            Submit
-          </Button>
-        </form>
+      <Box display="flex" justifyContent="center" mt={16}>
+        <Image src={FilterEasyLogo} width={282} />
+      </Box>
+      <Card mt={12}>
+        <CardHeader pb={2} pt={8}>
+          <Heading as="h3" size="lg" lineHeight={8} textAlign="center">
+            Sign In
+          </Heading>
+        </CardHeader>
+        <CardBody p={8} pt={6}>
+          <form onSubmit={handleSubmit}>
+            <VStack spacing={4}>
+              <FormControl>
+                <FormLabel>Email Address</FormLabel>
+                <Input
+                  type="email"
+                  name="email"
+                  placeholder="Enter your Email"
+                />
+              </FormControl>
+
+              <FormControl>
+                <FormLabel>Password</FormLabel>
+                <InputGroup>
+                  <Input
+                    type={isPasswordVisible ? 'text' : 'password'}
+                    name="password"
+                    placeholder="Enter your Password"
+                  />
+                  <InputRightElement>
+                    <IconButton
+                      variant="link"
+                      colorScheme="secondary"
+                      aria-label="Show Password"
+                      fontSize="20px"
+                      icon={<Icon />}
+                      onClick={handlePasswordVisibility}
+                    />
+                  </InputRightElement>
+                </InputGroup>
+              </FormControl>
+
+              {error && isOpen && (
+                <Alert description={error} status="error" onClose={onClose} />
+              )}
+
+              <Button type="submit" width="full" isLoading={isLoading}>
+                Sign In
+              </Button>
+
+              <Button
+                variant="link"
+                colorScheme="text"
+                textDecoration="underline"
+                onClick={() => alert('reset password')}
+              >
+                Forgot your password?
+              </Button>
+            </VStack>
+          </form>
+        </CardBody>
       </Card>
     </Container>
   )
