@@ -1,7 +1,7 @@
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 import {
   FormControl,
   FormLabel,
-  Icon,
   IconButton,
   Input,
   InputGroup,
@@ -47,6 +47,8 @@ export const FormInput = ({
     setIsPasswordVisible((prevState) => !prevState)
   }
 
+  const viewPassIcon = isPasswordVisible ? <ViewOffIcon /> : <ViewIcon />
+
   return (
     <FormControl isReadOnly={isReadOnly} isRequired={isRequired}>
       {label && <FormLabel>{label}</FormLabel>}
@@ -65,7 +67,7 @@ export const FormInput = ({
               colorScheme="secondary"
               aria-label="Show Password"
               fontSize="20px"
-              icon={<Icon />}
+              icon={viewPassIcon}
               onClick={handlePasswordVisibility}
             />
           </InputRightElement>
