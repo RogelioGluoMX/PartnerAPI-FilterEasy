@@ -5,22 +5,15 @@ import {
   CardBody,
   CardHeader,
   Container,
-  FormControl,
-  FormLabel,
   Heading,
-  Icon,
-  IconButton,
   Image,
-  Input,
-  InputGroup,
-  InputRightElement,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react'
 import { signIn } from 'aws-amplify/auth'
 import { useState, type FormEvent } from 'react'
 import FilterEasyLogo from '../../assets/logos/filtereasy-logo-2x.png'
-import { Alert } from '../../components'
+import { Alert, FormInput } from '../../components'
 import { getErrorMessage } from '../../utils'
 
 interface SignInFormElements extends HTMLFormControlsCollection {
@@ -35,7 +28,6 @@ interface SignInForm extends HTMLFormElement {
 export const SignInPage = () => {
   const { isOpen, onClose, onOpen } = useDisclosure({ defaultIsOpen: false })
   const [isLoading, setIsLoading] = useState(false)
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (event: FormEvent<SignInForm>) => {
@@ -59,10 +51,6 @@ export const SignInPage = () => {
     }
   }
 
-  const handlePasswordVisibility = () => {
-    setIsPasswordVisible((prevState) => !prevState)
-  }
-
   return (
     <Container>
       <Box display="flex" justifyContent="center" mt={16}>
@@ -77,35 +65,19 @@ export const SignInPage = () => {
         <CardBody p={8} pt={6}>
           <form onSubmit={handleSubmit}>
             <VStack spacing={4}>
-              <FormControl>
-                <FormLabel>Email Address</FormLabel>
-                <Input
-                  type="email"
-                  name="email"
-                  placeholder="Enter your Email"
-                />
-              </FormControl>
+              <FormInput
+                type="email"
+                name="email"
+                label="Email Address"
+                placeholder="Enter your Email"
+              />
 
-              <FormControl>
-                <FormLabel>Password</FormLabel>
-                <InputGroup>
-                  <Input
-                    type={isPasswordVisible ? 'text' : 'password'}
-                    name="password"
-                    placeholder="Enter your Password"
-                  />
-                  <InputRightElement>
-                    <IconButton
-                      variant="link"
-                      colorScheme="secondary"
-                      aria-label="Show Password"
-                      fontSize="20px"
-                      icon={<Icon />}
-                      onClick={handlePasswordVisibility}
-                    />
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
+              <FormInput
+                type="password"
+                name="password"
+                label="Password"
+                placeholder="Enter your Password"
+              />
 
               {error && isOpen && (
                 <Alert description={error} status="error" onClose={onClose} />
