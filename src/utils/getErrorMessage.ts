@@ -1,4 +1,12 @@
 export const getErrorMessage = (e: unknown): string => {
   const error = e as Error
-  return error?.message || 'An unexpected error has occurred.'
+  const message = formatErrorMessage(error?.message)
+  return message || 'An unexpected error has occurred.'
+}
+
+const formatErrorMessage = (message: string) => {
+  return message
+    .replace('username', 'Email')
+    .replace('password', 'Password')
+    .replace('signIn', 'Sign In')
 }
