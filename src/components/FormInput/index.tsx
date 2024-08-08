@@ -7,7 +7,7 @@ import {
   InputGroup,
   InputRightElement,
 } from '@chakra-ui/react'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useCallback, useState } from 'react'
 
 export type FormInputProps = {
   type: 'text' | 'password' | 'email'
@@ -35,13 +35,16 @@ export const FormInput = ({
     setValue(event.currentTarget.value)
   }
 
-  const getInputType = (inputType: FormInputProps['type']) => {
-    return inputType === 'password'
-      ? isPasswordVisible
-        ? 'text'
-        : 'password'
-      : inputType
-  }
+  const getInputType = useCallback(
+    (inputType: FormInputProps['type']) => {
+      return inputType === 'password'
+        ? isPasswordVisible
+          ? 'text'
+          : 'password'
+        : inputType
+    },
+    [isPasswordVisible]
+  )
 
   const handlePasswordVisibility = () => {
     setIsPasswordVisible((prevState) => !prevState)
