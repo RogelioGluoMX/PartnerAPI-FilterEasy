@@ -7,14 +7,14 @@ import {
   InputGroup,
   InputRightElement,
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 
 export type FormInputProps = {
   type: 'text' | 'password' | 'email'
   name: string
   label?: string
   placeholder?: string
-  value?: string
+  initialValue?: string
   isReadOnly?: boolean
   isRequired?: boolean
 }
@@ -24,14 +24,15 @@ export const FormInput = ({
   name,
   label,
   placeholder,
-  value = '',
+  initialValue = '',
   isReadOnly = false,
   isRequired = false,
 }: FormInputProps) => {
+  const [value, setValue] = useState(initialValue)
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
-  const handlePasswordVisibility = () => {
-    setIsPasswordVisible((prevState) => !prevState)
+  const handleInputChange = (event: FormEvent<HTMLInputElement>) => {
+    setValue(event.currentTarget.value)
   }
 
   const getInputType = (inputType: FormInputProps['type']) => {
@@ -40,6 +41,10 @@ export const FormInput = ({
         ? 'text'
         : 'password'
       : inputType
+  }
+
+  const handlePasswordVisibility = () => {
+    setIsPasswordVisible((prevState) => !prevState)
   }
 
   return (
@@ -51,6 +56,7 @@ export const FormInput = ({
           name={name}
           placeholder={placeholder}
           value={value}
+          onChange={handleInputChange}
         />
         {type === 'password' && (
           <InputRightElement>
