@@ -52,8 +52,8 @@ export const SignInPage = () => {
   }
 
   return (
-    <Container>
-      <Box display="flex" justifyContent="center" mt={16}>
+    <Container pt={16}>
+      <Box display="flex" justifyContent="center">
         <Image src={FilterEasyLogo} width={282} />
       </Box>
       <Card mt={12}>
