@@ -6,6 +6,7 @@ import {
 import type { StyleFunctionProps } from '@chakra-ui/styled-system'
 import { mode } from '@chakra-ui/theme-tools'
 import { alertTheme } from './alertTheme'
+import { formTheme } from './formTheme'
 
 const config: ThemeConfig = {
   initialColorMode: 'light',
@@ -55,6 +56,7 @@ const fonts = {
 
 const components = {
   Alert: alertTheme,
+  Form: formTheme,
 }
 
 export const theme = extendTheme(
