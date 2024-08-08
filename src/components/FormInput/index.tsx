@@ -14,8 +14,9 @@ export type FormInputProps = {
   name: string
   label?: string
   placeholder?: string
-  readOnly?: boolean
-  required?: boolean
+  value?: string
+  isReadOnly?: boolean
+  isRequired?: boolean
 }
 
 export const FormInput = ({
@@ -23,8 +24,9 @@ export const FormInput = ({
   name,
   label,
   placeholder,
-  readOnly = false,
-  required = false,
+  value = '',
+  isReadOnly = false,
+  isRequired = false,
 }: FormInputProps) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
@@ -41,15 +43,14 @@ export const FormInput = ({
   }
 
   return (
-    <FormControl>
+    <FormControl isReadOnly={isReadOnly} isRequired={isRequired}>
       {label && <FormLabel>{label}</FormLabel>}
       <InputGroup>
         <Input
           type={getInputType(type)}
           name={name}
           placeholder={placeholder}
-          readOnly={readOnly}
-          required={required}
+          value={value}
         />
         {type === 'password' && (
           <InputRightElement>
