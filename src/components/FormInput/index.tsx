@@ -15,8 +15,12 @@ export type FormInputProps = {
   label?: string
   placeholder?: string
   initialValue?: string
+  isDisabled?: boolean
+  isHidden?: boolean
+  isInvalid?: boolean
   isReadOnly?: boolean
   isRequired?: boolean
+  onChangeText?: (value: string) => void
 }
 
 export const FormInput = ({
@@ -25,14 +29,19 @@ export const FormInput = ({
   label,
   placeholder,
   initialValue = '',
+  isDisabled = false,
+  isHidden = false,
+  isInvalid = false,
   isReadOnly = false,
   isRequired = false,
+  onChangeText,
 }: FormInputProps) => {
   const [value, setValue] = useState(initialValue)
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   const handleInputChange = (event: FormEvent<HTMLInputElement>) => {
     setValue(event.currentTarget.value)
+    onChangeText?.(event.currentTarget.value)
   }
 
   const getInputType = useCallback(
@@ -53,7 +62,13 @@ export const FormInput = ({
   const viewPassIcon = isPasswordVisible ? <ViewOffIcon /> : <ViewIcon />
 
   return (
-    <FormControl isReadOnly={isReadOnly} isRequired={isRequired}>
+    <FormControl
+      isDisabled={isDisabled}
+      isReadOnly={isReadOnly}
+      isRequired={isRequired}
+      hidden={isHidden}
+      isInvalid={isInvalid}
+    >
       {label && <FormLabel>{label}</FormLabel>}
       <InputGroup>
         <Input
