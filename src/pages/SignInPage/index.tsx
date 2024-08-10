@@ -1,18 +1,15 @@
 import {
-  Box,
   Button,
   Card,
   CardBody,
   CardHeader,
-  Container,
   Heading,
-  Image,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react'
 import { signIn } from 'aws-amplify/auth'
 import { useEffect, useState, type FormEvent } from 'react'
-import FilterEasyLogo from '../../assets/logos/filtereasy-logo-2x.png'
+import { useNavigate } from 'react-router-dom'
 import { Alert, FormInput } from '../../components'
 import { getErrorMessage } from '../../utils'
 
@@ -41,13 +38,10 @@ export const SignInPage = () => {
     setError(undefined)
 
     const form = event.currentTarget
-    // ... validate inputs
+    const { email, password } = form.elements
 
     try {
-      await signIn({
-        username: form.elements.email.value,
-        password: form.elements.password.value,
-      })
+      await signIn({ username: email.value, password: password.value })
     } catch (e) {
       setError(getErrorMessage(e))
     } finally {
@@ -56,32 +50,28 @@ export const SignInPage = () => {
   }
 
   return (
-    <Container pt={16}>
-      <Box display="flex" justifyContent="center">
-        <Image src={FilterEasyLogo} width={282} />
-      </Box>
-      <Card mt={12}>
-        <CardHeader pb={2} pt={8}>
-          <Heading as="h3" size="lg" lineHeight={8} textAlign="center">
-            Sign In
-          </Heading>
-        </CardHeader>
-        <CardBody p={8} pt={6}>
-          <form onSubmit={handleSubmit}>
-            <VStack spacing={4}>
-              <FormInput
-                type="email"
-                name="email"
-                label="Email Address"
-                placeholder="Enter your Email"
-              />
+    <Card mt={12}>
+      <CardHeader p={8} pb={2}>
+        <Heading as="h3" size="lg" lineHeight={8} textAlign="center">
+          Sign In
+        </Heading>
+      </CardHeader>
+      <CardBody p={8} pt={6}>
+        <form onSubmit={handleSubmit}>
+          <VStack spacing={4}>
+            <FormInput
+              type="email"
+              name="email"
+              label="Email Address"
+              placeholder="Enter your Email"
+            />
 
-              <FormInput
-                type="password"
-                name="password"
-                label="Password"
-                placeholder="Enter your Password"
-              />
+            <FormInput
+              type="password"
+              name="password"
+              label="Password"
+              placeholder="Enter your Password"
+            />
 
             {error && (
               <Alert
@@ -91,22 +81,21 @@ export const SignInPage = () => {
               />
             )}
 
-              <Button type="submit" width="full" isLoading={isLoading}>
-                Sign In
-              </Button>
+            <Button type="submit" width="full" isLoading={isLoading}>
+              Sign In
+            </Button>
 
-              <Button
-                variant="link"
-                colorScheme="text"
-                textDecoration="underline"
-                onClick={() => alert('reset password')}
-              >
-                Forgot your password?
-              </Button>
-            </VStack>
-          </form>
-        </CardBody>
-      </Card>
-    </Container>
+            <Button
+              variant="link"
+              colorScheme="text"
+              textDecoration="underline"
+              onClick={() => navigate('password-reset')}
+            >
+              Forgot your password?
+            </Button>
+          </VStack>
+        </form>
+      </CardBody>
+    </Card>
   )
 }
