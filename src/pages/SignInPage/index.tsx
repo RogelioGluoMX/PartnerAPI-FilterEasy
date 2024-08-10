@@ -11,7 +11,7 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { signIn } from 'aws-amplify/auth'
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import FilterEasyLogo from '../../assets/logos/filtereasy-logo-2x.png'
 import { Alert, FormInput } from '../../components'
 import { getErrorMessage } from '../../utils'
@@ -26,14 +26,19 @@ interface SignInForm extends HTMLFormElement {
 }
 
 export const SignInPage = () => {
-  const { isOpen, onClose, onOpen } = useDisclosure({ defaultIsOpen: false })
+  const navigate = useNavigate()
+  const { onClose, onOpen } = useDisclosure({ defaultIsOpen: false })
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<string | undefined>(undefined)
+
+  useEffect(() => {
+    error ? onOpen() : onClose()
+  }, [error, onOpen, onClose])
 
   const handleSubmit = async (event: FormEvent<SignInForm>) => {
     event.preventDefault()
     setIsLoading(true)
-    onClose()
+    setError(undefined)
 
     const form = event.currentTarget
     // ... validate inputs
@@ -45,7 +50,6 @@ export const SignInPage = () => {
       })
     } catch (e) {
       setError(getErrorMessage(e))
-      onOpen()
     } finally {
       setIsLoading(false)
     }
@@ -79,9 +83,13 @@ export const SignInPage = () => {
                 placeholder="Enter your Password"
               />
 
-              {error && isOpen && (
-                <Alert description={error} status="error" onClose={onClose} />
-              )}
+            {error && (
+              <Alert
+                description={error}
+                status="error"
+                onClose={() => setError(undefined)}
+              />
+            )}
 
               <Button type="submit" width="full" isLoading={isLoading}>
                 Sign In
