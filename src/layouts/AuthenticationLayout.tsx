@@ -1,6 +1,6 @@
+import FilterEasyLogo from '@assets/logos/filtereasy-logo-2x.png'
 import { Box, Container, Image } from '@chakra-ui/react'
 import { Outlet } from 'react-router-dom'
-import FilterEasyLogo from '../assets/logos/filtereasy-logo-2x.png'
 
 export const AuthenticationLayout = () => {
   return (

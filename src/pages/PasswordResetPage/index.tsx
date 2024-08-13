@@ -11,6 +11,7 @@ import {
   useToast,
   VStack,
 } from '@chakra-ui/react'
+import { getErrorMessage } from '@utils'
 import {
   confirmResetPassword,
   resetPassword,
@@ -20,7 +21,6 @@ import {
 import { useEffect, useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Alert, FormInput } from '../../components'
-import { getErrorMessage } from '../../utils'
 
 interface PasswordResetFormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement

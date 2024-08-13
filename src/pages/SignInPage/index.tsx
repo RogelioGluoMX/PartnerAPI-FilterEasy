@@ -7,11 +7,11 @@ import {
   useDisclosure,
   VStack,
 } from '@chakra-ui/react'
+import { Alert, FormInput } from '@components'
+import { getErrorMessage } from '@utils'
 import { signIn } from 'aws-amplify/auth'
 import { useEffect, useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Alert, FormInput } from '../../components'
-import { getErrorMessage } from '../../utils'
 
 interface SignInFormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement
