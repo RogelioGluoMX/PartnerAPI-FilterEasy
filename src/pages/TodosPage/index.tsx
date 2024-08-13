@@ -31,7 +31,7 @@ export const TodosPage = () => {
   }
 
   return (
-    <Container>
+    <Container maxW="container.xl">
       <Heading>Hello {user?.signInDetails?.loginId}</Heading>
       <Heading as="h3" size={'md'}>
         My to-dos

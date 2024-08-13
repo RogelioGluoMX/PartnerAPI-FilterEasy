@@ -89,7 +89,7 @@ export const SignInPage = () => {
               variant="link"
               colorScheme="text"
               textDecoration="underline"
-              onClick={() => navigate('password-reset')}
+              onClick={() => navigate('/password-reset')}
             >
               Forgot your password?
             </Button>

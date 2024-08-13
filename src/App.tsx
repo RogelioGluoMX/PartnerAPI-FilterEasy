@@ -9,14 +9,19 @@ function App() {
       path: '/',
       element: <AuthenticationLayout />,
       children: [
-        { index: true, element: <SignInPage /> },
-        { path: 'password-reset', element: <PasswordResetInPage /> },
+        { index: true, element: <Navigate to="signin" replace /> },
+        { path: '/signin', element: <SignInPage /> },
+        { path: '/password-reset', element: <PasswordResetPage /> },
       ],
     },
     {
       path: '/admin',
       element: <AdminLayout />,
-      children: [{ index: true, element: <TodosPage /> }],
+      children: [
+        { index: true, element: <Navigate to="/admin/waves" replace /> },
+        { path: '/admin/waves', element: <TodosPage /> },
+        { path: '/admin/logs', element: <PasswordResetPage /> },
+      ],
     },
   ])
 

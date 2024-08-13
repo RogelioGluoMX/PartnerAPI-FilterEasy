@@ -5,12 +5,12 @@ import {
   CardBody,
   CardHeader,
   Heading,
-  ListItem,
-  UnorderedList,
   useDisclosure,
   useToast,
   VStack,
 } from '@chakra-ui/react'
+import { Alert, FormInput, PasswordRequirementsList } from '@components'
+import { useValidatePassword } from '@hooks'
 import { getErrorMessage } from '@utils'
 import {
   confirmResetPassword,
@@ -20,7 +20,6 @@ import {
 } from 'aws-amplify/auth'
 import { useEffect, useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Alert, FormInput } from '../../components'
 
 interface PasswordResetFormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement
@@ -33,13 +32,16 @@ interface PasswordResetForm extends HTMLFormElement {
   readonly elements: PasswordResetFormElements
 }
 
-export const PasswordResetInPage = () => {
+export const PasswordResetPage = () => {
   const navigate = useNavigate()
   const toast = useToast()
+  const [passwordState, validatePassword] = useValidatePassword()
   const { onClose, onOpen } = useDisclosure({ defaultIsOpen: false })
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>(undefined)
   const [isConfirmStep, setIsConfirmStep] = useState(false)
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
 
   useEffect(() => {
     error !== undefined ? onOpen() : onClose
@@ -127,9 +129,16 @@ export const PasswordResetInPage = () => {
     }
   }
 
-  const validatePassword = (value: string) => {
-    return value.length > 0
+  const handlePasswordChange = (value: string) => {
+    setPassword(value)
+    validatePassword(value)
   }
+
+  const handlePasswordConfirmChange = (value: string) => {
+    setConfirmPassword(value)
+  }
+
+  const isPasswordMatch = confirmPassword === password
 
   return (
     <Card mt={12}>
@@ -164,7 +173,7 @@ export const PasswordResetInPage = () => {
                   name="newPassword"
                   label="New Password"
                   placeholder="Enter new password"
-                  onChangeText={validatePassword}
+                  onChangeText={handlePasswordChange}
                   isRequired
                 />
 
@@ -172,13 +181,8 @@ export const PasswordResetInPage = () => {
                   <Heading as="h6" size="xs">
                     Your Password must meet the following requirements:
                   </Heading>
-                  <UnorderedList>
-                    <ListItem>One uppercase letter</ListItem>
-                    <ListItem>One lowercase letter</ListItem>
-                    <ListItem>One digit</ListItem>
-                    <ListItem>One special characters</ListItem>
-                    <ListItem>Between 8 and 20 characters long</ListItem>
-                  </UnorderedList>
+
+                  <PasswordRequirementsList state={passwordState} />
                 </Box>
 
                 <FormInput
@@ -186,6 +190,8 @@ export const PasswordResetInPage = () => {
                   name="confirmPassword"
                   label="Confirm Password"
                   placeholder="Please confirm your Password"
+                  onChangeText={handlePasswordConfirmChange}
+                  isInvalid={!isPasswordMatch}
                   isRequired
                 />
               </>
@@ -217,7 +223,7 @@ export const PasswordResetInPage = () => {
                 variant="link"
                 colorScheme="text"
                 textDecoration="underline"
-                onClick={() => navigate('..')}
+                onClick={() => navigate('/signin')}
               >
                 Back to Sign In
               </Button>
