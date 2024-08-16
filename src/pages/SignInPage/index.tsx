@@ -5,13 +5,14 @@ import {
   CardHeader,
   Heading,
   useDisclosure,
+  useToast,
   VStack,
 } from '@chakra-ui/react'
 import { Alert, FormInput } from '@components'
 import { getErrorMessage } from '@utils'
 import { signIn } from 'aws-amplify/auth'
 import { useEffect, useState, type FormEvent } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 interface SignInFormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement
@@ -24,9 +25,23 @@ interface SignInForm extends HTMLFormElement {
 
 export const SignInPage = () => {
   const navigate = useNavigate()
+  const toast = useToast()
   const { onClose, onOpen } = useDisclosure({ defaultIsOpen: false })
+  const [searchParams] = useSearchParams()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>(undefined)
+
+  useEffect(() => {
+    searchParams.get('reset') === 'success' &&
+      toast({
+        title: 'Password reset completed',
+        description: 'The password has been successfully reset.',
+        variant: 'solid',
+        position: 'top',
+        status: 'success',
+        duration: 7500,
+      })
+  })
 
   useEffect(() => {
     error ? onOpen() : onClose()
