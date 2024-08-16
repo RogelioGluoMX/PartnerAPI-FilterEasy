@@ -1,3 +1,4 @@
+export * from './PasswordResetPage'
 export * from './SignInPage'
 export * from './TodosPage'
-export * from './PasswordResetPage'
+export * from './WavesPage'
