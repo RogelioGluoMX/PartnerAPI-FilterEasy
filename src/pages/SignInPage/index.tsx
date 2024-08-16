@@ -27,7 +27,7 @@ export const SignInPage = () => {
   const navigate = useNavigate()
   const toast = useToast()
   const { onClose, onOpen } = useDisclosure({ defaultIsOpen: false })
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>(undefined)
 
@@ -51,6 +51,7 @@ export const SignInPage = () => {
     event.preventDefault()
     setIsLoading(true)
     setError(undefined)
+    setSearchParams(undefined)
 
     const form = event.currentTarget
     const { email, password } = form.elements
