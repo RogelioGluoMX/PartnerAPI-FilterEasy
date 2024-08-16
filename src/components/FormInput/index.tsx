@@ -1,6 +1,7 @@
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 import {
   FormControl,
+  FormHelperText,
   FormLabel,
   IconButton,
   Input,
@@ -14,6 +15,7 @@ export type FormInputProps = {
   name: string
   label?: string
   placeholder?: string
+  helperText?: string
   initialValue?: string
   isDisabled?: boolean
   isHidden?: boolean
@@ -28,6 +30,7 @@ export const FormInput = ({
   name,
   label,
   placeholder,
+  helperText,
   initialValue = '',
   isDisabled = false,
   isHidden = false,
@@ -91,6 +94,7 @@ export const FormInput = ({
           </InputRightElement>
         )}
       </InputGroup>
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
   )
 }

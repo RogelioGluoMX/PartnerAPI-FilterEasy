@@ -18,7 +18,7 @@ import {
   type ConfirmResetPasswordInput,
   type ResetPasswordOutput,
 } from 'aws-amplify/auth'
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 interface PasswordResetFormElements extends HTMLFormControlsCollection {
@@ -38,10 +38,12 @@ export const PasswordResetPage = () => {
   const [passwordState, validatePassword] = useValidatePassword()
   const { onClose, onOpen } = useDisclosure({ defaultIsOpen: false })
   const [isLoading, setIsLoading] = useState(false)
+  const [isResendLoading, setIsResendLoading] = useState(false)
   const [error, setError] = useState<string | undefined>(undefined)
   const [isConfirmStep, setIsConfirmStep] = useState(false)
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const formRef = useRef(null)
 
   useEffect(() => {
     error !== undefined ? onOpen() : onClose
@@ -52,9 +54,10 @@ export const PasswordResetPage = () => {
     switch (nextStep.resetPasswordStep) {
       case 'CONFIRM_RESET_PASSWORD_WITH_CODE':
         toast({
-          title: 'Confirmation code sent!',
-          description: ' Please check your email.',
-          variant: 'subtle',
+          title: 'Code Sent Successfully',
+          description:
+            "If your email is linked to an account, you'll receive it shortly.",
+          variant: 'solid',
           position: 'top',
           status: 'success',
         })
@@ -76,6 +79,7 @@ export const PasswordResetPage = () => {
       setError(getErrorMessage(e))
     } finally {
       setIsLoading(false)
+      setIsResendLoading(false)
     }
   }
 
@@ -85,14 +89,6 @@ export const PasswordResetPage = () => {
     newPassword,
     confirmPassword,
   }: ConfirmResetPasswordInput & { confirmPassword: string }) => {
-    console.log(
-      'username, confirmationCode, newPassword,confirmPassword',
-      username,
-      confirmationCode,
-      newPassword,
-      confirmPassword
-    )
-
     if (newPassword !== confirmPassword) {
       setError('Password confirm mismatch.')
       setIsLoading(false)
@@ -101,6 +97,17 @@ export const PasswordResetPage = () => {
 
     try {
       await confirmResetPassword({ username, confirmationCode, newPassword })
+      toast({
+        title: 'Password reset completed',
+        description:
+          'The password has been successfully reset. Redirecting in 5 seconds...',
+        variant: 'solid',
+        position: 'top',
+        status: 'success',
+      })
+      setTimeout(() => {
+        navigate('/signin')
+      }, 5000)
     } catch (e) {
       setError(getErrorMessage(e))
     } finally {
@@ -129,6 +136,14 @@ export const PasswordResetPage = () => {
     }
   }
 
+  const handleResendCode = () => {
+    setIsResendLoading(true)
+    setError(undefined)
+    const form = formRef.current as unknown as PasswordResetForm
+    const { email } = form.elements
+    handleResetPassword(email.value)
+  }
+
   const handlePasswordChange = (value: string) => {
     setPassword(value)
     validatePassword(value)
@@ -148,7 +163,7 @@ export const PasswordResetPage = () => {
         </Heading>
       </CardHeader>
       <CardBody p={8} pt={6}>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} ref={formRef} autoComplete="off">
           <VStack spacing={4}>
             <FormInput
               type="email"
@@ -165,6 +180,7 @@ export const PasswordResetPage = () => {
                   name="confirmationCode"
                   label="Code"
                   placeholder="Enter the confirmation code"
+                  helperText="You'll find the code in your email."
                   isRequired
                 />
 
@@ -206,7 +222,7 @@ export const PasswordResetPage = () => {
             )}
 
             <Button type="submit" width="full" isLoading={isLoading}>
-              {isConfirmStep ? 'Submit' : 'Send Code'}
+              {isConfirmStep ? 'Reset Password' : 'Send Code'}
             </Button>
 
             {isConfirmStep ? (
@@ -214,7 +230,8 @@ export const PasswordResetPage = () => {
                 variant="link"
                 colorScheme="text"
                 textDecoration="underline"
-                onClick={() => alert('Resend Code')}
+                onClick={handleResendCode}
+                isLoading={isResendLoading}
               >
                 Resend Code
               </Button>
@@ -223,7 +240,7 @@ export const PasswordResetPage = () => {
                 variant="link"
                 colorScheme="text"
                 textDecoration="underline"
-                onClick={() => navigate('/signin')}
+                onClick={() => navigate('/')}
               >
                 Back to Sign In
               </Button>
