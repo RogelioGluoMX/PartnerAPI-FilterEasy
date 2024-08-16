@@ -41,7 +41,13 @@ export const SignInPage = () => {
     const { email, password } = form.elements
 
     try {
-      await signIn({ username: email.value, password: password.value })
+      const output = await signIn({
+        username: email.value,
+        password: password.value,
+      })
+      if (output.isSignedIn) {
+        navigate('/waves')
+      }
     } catch (e) {
       setError(getErrorMessage(e))
     } finally {

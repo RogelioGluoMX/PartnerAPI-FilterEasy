@@ -1,34 +1,29 @@
 import { useAuthenticator } from '@aws-amplify/ui-react'
+import { Heading } from '@chakra-ui/react'
 import { AdminLayout, AuthenticationLayout } from '@layouts'
-import { PasswordResetPage, SignInPage, TodosPage } from '@pages'
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
+import { PasswordResetPage, SignInPage } from '@pages'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 
 function App() {
-  const router = createBrowserRouter([
-    {
-      path: '/',
-      element: <AuthenticationLayout />,
-      children: [
-        { index: true, element: <Navigate to="signin" replace /> },
-        { path: '/signin', element: <SignInPage /> },
-        { path: '/password-reset', element: <PasswordResetPage /> },
-      ],
-    },
-    {
-      path: '/admin',
-      element: <AdminLayout />,
-      children: [
-        { index: true, element: <Navigate to="/admin/waves" replace /> },
-        { path: '/admin/waves', element: <TodosPage /> },
-        { path: '/admin/logs', element: <PasswordResetPage /> },
-      ],
-    },
-  ])
+  const { authStatus } = useAuthenticator((context) => [context.authStatus])
 
-  // const { authStatus } = useAuthenticator()
+  if (authStatus === 'configuring') return <></>
 
-  // return authStatus === 'unauthenticated' ? <SignInPage /> : <TodosPage />
-  return <RouterProvider router={router} />
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Navigate to="/waves" replace />} />
+        <Route path="/" element={<AuthenticationLayout />}>
+          <Route path="/signin" element={<SignInPage />} />
+          <Route path="/password-reset" element={<PasswordResetPage />} />
+        </Route>
+        <Route path="/" element={<AdminLayout />}>
+          <Route path="/waves" element={<Heading>Waves</Heading>} />
+          <Route path="/logs" element={<Heading>Logs</Heading>} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default App

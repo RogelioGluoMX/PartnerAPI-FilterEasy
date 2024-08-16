@@ -1,3 +1,5 @@
 export * from './Alert'
+export * from './CustomIcon'
 export * from './FormInput'
+export * from './NavBar'
 export * from './PasswordRequirements'
