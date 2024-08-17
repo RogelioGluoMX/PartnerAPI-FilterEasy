@@ -1,11 +1,10 @@
 import React from 'react';
-import { Button, Flex, HStack, Image, useTheme } from '@chakra-ui/react'
+import { Button, Flex } from '@chakra-ui/react'
 import JsBarcode from 'jsbarcode';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { AutoTableOptions } from 'jspdf-autotable';
 import * as Constants from '@utils/constants';
-import * as Footer1 from '@utils/footer1';
 import * as Footer2 from '@utils/footer2';
 import * as Logo from '@utils/logo';
 import * as Table from '@utils/table';
