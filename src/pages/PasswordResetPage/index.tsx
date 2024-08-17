@@ -97,17 +97,7 @@ export const PasswordResetPage = () => {
 
     try {
       await confirmResetPassword({ username, confirmationCode, newPassword })
-      toast({
-        title: 'Password reset completed',
-        description:
-          'The password has been successfully reset. Redirecting in 5 seconds...',
-        variant: 'solid',
-        position: 'top',
-        status: 'success',
-      })
-      setTimeout(() => {
-        navigate('/signin')
-      }, 5000)
+      navigate('/signin?reset=success')
     } catch (e) {
       setError(getErrorMessage(e))
     } finally {
