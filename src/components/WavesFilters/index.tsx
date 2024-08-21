@@ -61,6 +61,10 @@ export const WavesFilters = ({
     })
   }
 
+  const handleFiltersClearAll = () => {
+    onFilter(defaultValues)
+  }
+
   return (
     <form onSubmit={handleFiltersSubmit}>
       <VStack align={'stretch'} spacing={4}>
@@ -135,6 +139,7 @@ export const WavesFilters = ({
               variant="ghost"
               color="text"
               textDecoration={'underline'}
+              onClick={handleFiltersClearAll}
             >
               Clear All
             </Button>
