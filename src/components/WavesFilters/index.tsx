@@ -1,5 +1,7 @@
 import {
+  Box,
   Button,
+  Collapse,
   Flex,
   FormControl,
   FormLabel,
@@ -67,28 +69,28 @@ export const WavesFilters = ({
 
   return (
     <form onSubmit={handleFiltersSubmit}>
-      <VStack align={'stretch'} spacing={4}>
-        {/* Toggle and Results */}
-        <Flex justify="space-between">
-          <Button
-            variant="ghost"
-            fontFamily="urbana"
-            fontSize={20}
-            color="secondary.500"
-            rightIcon={<FilterAltOutlined fontSize="small" />}
-            textDecoration={'underline'}
-            onClick={toggleFiltersSection}
-          >
-            {isFiltersSectionOpen ? 'Hide Filters' : 'Show Filters'}
-          </Button>
-          <Text>
-            Showing <Text as="b">11</Text> to <Text as="b">20</Text> of 59,120
-            entries
-          </Text>
-        </Flex>
+      {/* Toggle and Results */}
+      <Flex justify="space-between">
+        <Button
+          variant="ghost"
+          fontFamily="urbana"
+          fontSize={20}
+          color="secondary.500"
+          rightIcon={<FilterAltOutlined fontSize="small" />}
+          textDecoration={'underline'}
+          onClick={toggleFiltersSection}
+        >
+          {isFiltersSectionOpen ? 'Hide Filters' : 'Show Filters'}
+        </Button>
+        <Text>
+          Showing <Text as="b">11</Text> to <Text as="b">20</Text> of 59,120
+          entries
+        </Text>
+      </Flex>
 
-        {/* Fields */}
-        {isFiltersSectionOpen && (
+      <Collapse in={isFiltersSectionOpen}>
+        <VStack align="stretch" spacing={4} overflow="hidden" pt={4}>
+          {/* Fields */}
           <Flex columnGap={5}>
             <FormControl>
               <FormLabel>From</FormLabel>
@@ -129,10 +131,7 @@ export const WavesFilters = ({
               </Select>
             </FormControl>
           </Flex>
-        )}
-
-        {/* Actions */}
-        {isFiltersSectionOpen && (
+          {/* Actions */}
           <Flex justify="flex-end" columnGap={10}>
             <Button
               type="reset"
@@ -143,11 +142,10 @@ export const WavesFilters = ({
             >
               Clear All
             </Button>
-
             <Button type="submit">Apply Filters</Button>
           </Flex>
-        )}
-      </VStack>
+        </VStack>
+      </Collapse>
     </form>
   )
 }
