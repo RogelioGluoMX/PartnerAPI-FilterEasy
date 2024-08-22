@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Collapse,
   Flex,
@@ -8,7 +7,7 @@ import {
   Input,
   Select,
   Text,
-  VStack,
+  VStack
 } from '@chakra-ui/react'
 import FilterAltOutlined from '@mui/icons-material/FilterAltOutlined'
 import { FormEvent, useState } from 'react'
