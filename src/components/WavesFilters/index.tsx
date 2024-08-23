@@ -7,10 +7,11 @@ import {
   Input,
   Select,
   Text,
-  VStack
+  VStack,
 } from '@chakra-ui/react'
 import FilterAltOutlined from '@mui/icons-material/FilterAltOutlined'
 import { FormEvent, useState } from 'react'
+import { type Wave } from '@components'
 
 interface FiltersFormElements extends HTMLFormControlsCollection {
   fromDate: HTMLInputElement
@@ -23,14 +24,11 @@ interface FiltersForm extends HTMLFormElement {
   readonly elements: FiltersFormElements
 }
 
-const statusList = ['All', 'Available', 'Downloaded'] as const
-const entriesList = ['50', '75', '100'] as const
-
 export type Filters = {
   fromDate: string
   toDate: string
-  status: (typeof statusList)[number]
-  entriesPerPage: (typeof entriesList)[number]
+  status: Wave['status']
+  entriesPerPage: string
 }
 
 export type WavesFiltersProps = {
@@ -112,9 +110,9 @@ export const WavesFilters = ({
             <FormControl>
               <FormLabel>Status</FormLabel>
               <Select name="status" bg="white" defaultValue={status}>
-                {statusList.map((statusOption, index) => (
-                  <option key={index}>{statusOption}</option>
-                ))}
+                <option>All</option>
+                <option>Available</option>
+                <option>Downloaded</option>
               </Select>
             </FormControl>
             <FormControl>
@@ -124,9 +122,9 @@ export const WavesFilters = ({
                 bg="white"
                 defaultValue={entriesPerPage}
               >
-                {entriesList.map((entriesOption, index) => (
-                  <option key={index}>{entriesOption}</option>
-                ))}
+                <option>50</option>
+                <option>75</option>
+                <option>100</option>
               </Select>
             </FormControl>
           </Flex>
