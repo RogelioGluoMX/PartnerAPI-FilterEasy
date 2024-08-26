@@ -1,4 +1,4 @@
-import { Box, Container, VStack } from '@chakra-ui/react'
+import { Container, VStack } from '@chakra-ui/react'
 import {
   type Filters,
   HeaderWithSearch,
@@ -41,9 +41,9 @@ export const WavesPage = () => {
         <WavesFilters
           defaultValues={defaultFilters}
           onFilter={handleOnFilter}
+          stats={{ entriesTotal: 59120, page: 1, wavesCount: waves.length }}
         />
         <WavesTable waves={waves} />
-        <Box>Pagination</Box>
       </VStack>
     </Container>
   )

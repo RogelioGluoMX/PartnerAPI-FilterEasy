@@ -9,9 +9,9 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react'
+import { type Wave } from '@components'
 import FilterAltOutlined from '@mui/icons-material/FilterAltOutlined'
 import { FormEvent, useState } from 'react'
-import { type Wave } from '@components'
 
 interface FiltersFormElements extends HTMLFormControlsCollection {
   fromDate: HTMLInputElement
@@ -31,13 +31,21 @@ export type Filters = {
   entriesPerPage: string
 }
 
+export type Stats = {
+  entriesTotal: number
+  page: number
+  wavesCount: number
+}
+
 export type WavesFiltersProps = {
   defaultValues: Filters
+  stats: Stats
   onFilter: (filters: Filters) => void
 }
 
 export const WavesFilters = ({
   defaultValues,
+  stats,
   onFilter,
 }: WavesFiltersProps) => {
   const [isFiltersSectionOpen, setIsFiltersSectionOpen] = useState(false)
@@ -64,6 +72,10 @@ export const WavesFilters = ({
     onFilter(defaultValues)
   }
 
+  const rangeBottom = 1 + Number(entriesPerPage) * (stats.page - 1)
+  const rangeTop = rangeBottom + stats.wavesCount - 1
+  const totalEntries = stats.entriesTotal.toLocaleString()
+
   return (
     <form onSubmit={handleFiltersSubmit}>
       {/* Toggle and Results */}
@@ -79,10 +91,12 @@ export const WavesFilters = ({
         >
           {isFiltersSectionOpen ? 'Hide Filters' : 'Show Filters'}
         </Button>
-        <Text>
-          Showing <Text as="b">11</Text> to <Text as="b">20</Text> of 59,120
-          entries
-        </Text>
+        {!!stats.wavesCount && (
+          <Text>
+            Showing <Text as="b">{rangeBottom}</Text> to{' '}
+            <Text as="b">{rangeTop}</Text> of {totalEntries} entries
+          </Text>
+        )}
       </Flex>
 
       <Collapse in={isFiltersSectionOpen}>
