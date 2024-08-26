@@ -107,24 +107,24 @@ export const PDF = () => {
 
     doc.setFont("MyriadPro-Bold");
     doc.setFontSize(10);
-    doc.text("Order Date", 10, 22);
-    doc.text("Ship By Date", 10, 27);
-    doc.text("Shipment #", 10, 32);
-    doc.text("Order ID", 10, 37);
-    doc.text("Ship Via", 10, 48);
-    doc.text("Priority", 10, 53);
+    doc.text("Order Date", 10, 20);
+    doc.text("Ship By Date", 10, 25);
+    doc.text("Shipment #", 10, 30);
+    doc.text("Order ID", 10, 35);
+    doc.text("Ship Via", 10, 45);
+    doc.text("Priority", 10, 50);
     
 
     doc.setFont("MyriadPro-Regular");
     doc.setFontSize(11);
-    doc.text("30-Jun-2023", 38, 22);
-    doc.text("2023-07-01", 38, 27);
-    doc.text("1", 38, 32);
-    doc.text("11000000", 38, 37);
-    doc.text("FEDXSPS", 38, 48);
-    doc.text("99", 38, 53);
+    doc.text("30-Jun-2023", 38, 20);
+    doc.text("2023-07-01", 38, 25);
+    doc.text("1", 38, 30);
+    doc.text("11000000", 38, 35);
+    doc.text("FEDXSPS", 38, 45);
+    doc.text("99", 38, 50);
 
-    doc.text("Dennis Polizzi\n410 E 78th Street\n4B\nNew York, New York\n10128", 35, 65, {align: "center"});
+    doc.text("Dennis Polizzi\n410 E 78th Street\n4B\nNew York, New York\n10128", 35, 59, {align: "center"});
     
 
     
