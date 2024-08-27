@@ -6,7 +6,7 @@ import 'jspdf-autotable';
 import { AutoTableOptions } from 'jspdf-autotable';
 import * as Constants from '@utils/constants';
 import * as Footer2 from '@utils/footer2';
-import * as Logo from '@utils/logo';
+import { fetchImageAsBase64 } from '@utils/logo';
 import * as Table from '@utils/table';
 import "@assets/fonts/AsapCondensed-Regular-normal";
 import "@assets/fonts/MyriadPro-Bold-normal";
@@ -39,7 +39,7 @@ export const PDF = () => {
     });
   }, []);
 
-  const generatePdf = () => {
+  const generatePdf  = async () => {
     var doc = new jsPDF('p', 'mm', [279, 216]);
     doc.setFont("MyriadPro-Bold");
     var head = [['', '', '', '']];
@@ -98,7 +98,8 @@ export const PDF = () => {
     const finalY = (doc as any).lastAutoTable?.finalY || 10;
     doc.addImage(Footer2.FOOTER2_IMG, "JPEG", 6, finalY + 5,204,70);
 
-    doc.addImage(Logo.LOGO_IMG, "JPEG", 85,19,70,40);
+    const logoBase64 = await fetchImageAsBase64("https://fe-dev-logo-store-bucket.s3.amazonaws.com/logos/test12_1724800015007.jpeg");
+    doc.addImage(logoBase64, "JPEG", 85,19,70,40);
     doc.addImage(Table.TABLE_IMG, "JPEG", 6,6,59,82);
 
     doc.setFont("Urbana-Semibold");
