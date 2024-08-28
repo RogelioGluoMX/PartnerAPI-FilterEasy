@@ -100,7 +100,7 @@ export const PDF = () => {
 
     const logoBase64 = await fetchImageAsBase64("https://fe-dev-logo-store-bucket.s3.amazonaws.com/logos/test12_1724800015007.jpeg");
     doc.addImage(logoBase64, "JPEG", 85,19,70,40);
-    doc.addImage(Table.TABLE_IMG, "JPEG", 6,6,59,82);
+    doc.addImage(Table.TABLE_IMG, "JPEG", 6,6,59,75);
 
     doc.setFont("Urbana-Semibold");
     doc.setFontSize(13);
