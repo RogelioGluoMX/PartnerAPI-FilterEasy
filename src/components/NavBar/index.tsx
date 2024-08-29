@@ -30,7 +30,7 @@ export const NavBar = ({ onSignOut }: NavBarProps) => {
             style={({ isActive }) => ({
               fontSize: 18,
               fontWeight: isActive ? '700' : '400',
-              color: isActive ? theme.colors.primary['500'] : 'black',
+              color: isActive ? theme.colors.primary['600'] : 'black',
             })}
           >
             {label}
