@@ -15,36 +15,56 @@ const defaultFilters: Filters = {
   fromDate: '',
   toDate: '',
   status: 'All',
-  entriesPerPage: '50',
+  entriesPerPage: 50,
 }
 
 const waves = feWavesData as Wave[]
 const entriesTotal = 353
 
-export const WavesPage = () => {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [filters, setFilters] = useState<Filters>(defaultFilters)
-  const [page, setPage] = useState<number | string>(1)
+type Params = {
+  search: string
+  filters: Filters
+  page: number
+}
 
-  const handleSearch = (newQuery: string) => {
-    setSearchQuery(newQuery)
-    const params = { search: newQuery, ...filters, page }
-    console.log(params)
+export const WavesPage = () => {
+  const [params, setParams] = useState<Params>({
+    search: '',
+    filters: defaultFilters,
+    page: 1,
+  })
+
+  const updateParams = (newParams: Partial<typeof params>) => {
+    setParams((prevParams) => {
+      const updatedParams = { ...prevParams, ...newParams }
+
+      const flattenedParams = {
+        search: updatedParams.search,
+        page: updatedParams.page,
+        ...updatedParams.filters,
+      }
+
+      // send request with updated params
+      console.log(JSON.stringify(flattenedParams))
+
+      return updatedParams
+    })
+  }
+
+  const handleSearch = (newSearch: string) => {
+    updateParams({ search: newSearch, page: 1 })
   }
 
   const handleFilter = (newFilters: Filters) => {
-    setFilters(newFilters)
-    const params = { search: searchQuery, ...newFilters, page }
-    console.log(params)
+    updateParams({ filters: newFilters, page: 1 })
   }
 
-  const handlePageChange = (newPage: number | string) => {
-    setPage(newPage)
-    const params = { search: searchQuery, ...filters, page: newPage }
-    console.log(params)
+  const handlePageChange = (newPage: number) => {
+    updateParams({ page: newPage })
   }
 
-  const totalPages = Math.floor(entriesTotal / +filters.entriesPerPage) + 1
+  const totalPages =
+    Math.floor(entriesTotal / +params.filters.entriesPerPage) + 1
 
   return (
     <Container maxW="container.xl" pt={7} pb={12}>
@@ -53,7 +73,7 @@ export const WavesPage = () => {
         <WavesFilters
           defaultValues={defaultFilters}
           onFilter={handleFilter}
-          stats={{ entriesTotal, page: +page, wavesCount: waves.length }}
+          stats={{ entriesTotal, page: params.page, wavesCount: waves.length }}
         />
 
         {waves.length > 0 ? (
@@ -61,7 +81,7 @@ export const WavesPage = () => {
             <WavesTable waves={waves} />
             <Pagination
               totalPages={totalPages}
-              currentPage={+page}
+              currentPage={params.page}
               onPageChange={handlePageChange}
             />
           </VStack>

@@ -28,7 +28,7 @@ export type Filters = {
   fromDate: string
   toDate: string
   status: Wave['status']
-  entriesPerPage: string
+  entriesPerPage: number
 }
 
 export type Stats = {
@@ -64,7 +64,7 @@ export const WavesFilters = ({
       fromDate: fromDate.value,
       toDate: toDate.value,
       status: status.value as Filters['status'],
-      entriesPerPage: entriesPerPage.value as Filters['entriesPerPage'],
+      entriesPerPage: +entriesPerPage.value,
     })
   }
 

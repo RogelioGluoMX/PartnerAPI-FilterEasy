@@ -19,10 +19,10 @@ export const Pagination = ({
   const separators = 2
   const sideButtons = maxButtons - 1 // 1 separator on each side at the time
   const middleButtons = maxButtons - separators
-  const separator = '...'
+  const separator = -1
 
   const getRange = (count: number, startFrom = 1) =>
-    Array.from({ length: count }, (_, index) => `${startFrom + index}`)
+    Array.from({ length: count }, (_, index) => startFrom + index)
 
   const generatePageNumbers = useCallback(() => {
     if (totalPages <= maxButtons + separators) {
@@ -52,16 +52,15 @@ export const Pagination = ({
     pageNumbers.push(...getRange(1, totalPages))
 
     return pageNumbers
-  }, [currentPage, middleButtons, sideButtons, totalPages])
+  }, [currentPage, middleButtons, sideButtons, totalPages, separator])
 
   const ButtonList = useCallback(() => {
     return generatePageNumbers().map((page, index) => (
       <PaginationButton
         key={index}
-        isActive={currentPage === +page}
+        isActive={currentPage === page}
         page={page}
         onPageChange={onPageChange}
-        isDisabled={isNaN(+page)}
       />
     ))
   }, [currentPage, generatePageNumbers, onPageChange])
