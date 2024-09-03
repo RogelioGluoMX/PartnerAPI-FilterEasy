@@ -23,7 +23,7 @@ const blue = defineStyle({
 
 const blueAlt = defineStyle({
   ...blue,
-  fontFamily: 'urbana',
+  fontFamily: 'heading',
   textDecoration: 'none',
 })
 

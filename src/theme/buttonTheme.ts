@@ -51,7 +51,7 @@ const ghostBlue = defineStyle({
 
 const ghostBlueAlt = defineStyle({
   ...ghostBlue,
-  fontFamily: 'urbana',
+  fontFamily: 'heading',
 })
 
 export const buttonTheme = defineStyleConfig({
