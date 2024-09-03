@@ -1,8 +1,15 @@
 import { useAuthenticator } from '@aws-amplify/ui-react'
 import { Heading } from '@chakra-ui/react'
 import { AdminLayout, AuthenticationLayout } from '@layouts'
-import { PasswordResetPage, SignInPage, SignUpPage, WavesPage,PDFPage } from '@pages'
+import {
+  PasswordResetPage,
+  PDFPage,
+  SignInPage,
+  SignUpPage,
+  WavesPage,
+} from '@pages'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { WavesDetailPage } from './pages/WavesDetailPage'
 
 function App() {
   const { authStatus } = useAuthenticator((context) => [context.authStatus])
@@ -19,7 +26,8 @@ function App() {
           <Route path="/password-reset" element={<PasswordResetPage />} />
         </Route>
         <Route path="/" element={<AdminLayout />}>
-          <Route path="/pdf" element={<PDFPage/>}/>
+          <Route path="/pdf" element={<PDFPage />} />
+          <Route path="/waves/:id" element={<WavesDetailPage />} />
           <Route path="/waves" element={<WavesPage />} />
           <Route path="/logs" element={<Heading>Logs</Heading>} />
         </Route>

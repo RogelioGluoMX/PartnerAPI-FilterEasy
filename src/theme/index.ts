@@ -8,6 +8,7 @@ import { mode } from '@chakra-ui/theme-tools'
 import { alertTheme } from './alertTheme'
 import { buttonTheme } from './buttonTheme'
 import { formTheme } from './formTheme'
+import { linkTheme } from './linkTheme'
 import { tableTheme } from './tableTheme'
 
 const config: ThemeConfig = {
@@ -29,8 +30,14 @@ const colors = {
   },
   secondary: {
     100: '#e4e7ef',
+    200: '#b7c2de',
+    300: '#8a9dce',
+    400: '#5d78bd',
     500: '#3053ad',
+    600: '#244094',
     700: '#182e7c',
+    800: '#14244b',
+    900: '#0c162c',
   },
   shading: {
     100: '#f4f4f4',
@@ -54,6 +61,7 @@ const components = {
   Alert: alertTheme,
   Button: buttonTheme,
   Form: formTheme,
+  Link: linkTheme,
   Table: tableTheme,
 }
 

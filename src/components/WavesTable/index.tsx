@@ -46,12 +46,7 @@ export const WavesTable = ({ waves }: WavesTableProps) => {
             {waves.map((wave, index) => (
               <Tr key={index}>
                 <Td>
-                  <ChakraLink
-                    as={Link}
-                    to={wave.waveNumber}
-                    color="secondary.500"
-                    fontFamily="urbana"
-                  >
+                  <ChakraLink as={Link} to={wave.waveNumber} variant="blueAlt">
                     {wave.waveNumber}
                   </ChakraLink>
                 </Td>
@@ -60,8 +55,8 @@ export const WavesTable = ({ waves }: WavesTableProps) => {
                 <Td>{wave.lastDownloaded}</Td>
                 <Td>{wave.slipCount}</Td>
                 <Td>
-                  <ChakraLink as={Link} to={'/pdf'}>
-                    <CustomIcon.FilePDF boxSize={6} color="primary.500" />
+                  <ChakraLink as={Link} to={'/pdf'} variant="file">
+                    <CustomIcon.FilePDF boxSize={6} />
                   </ChakraLink>
                 </Td>
                 <Td>

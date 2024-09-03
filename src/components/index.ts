@@ -1,6 +1,7 @@
 export * from './Alert'
 export * from './BadgeFe'
 export * from './CustomIcon'
+export * from './DetailsItem'
 export * from './FormInput'
 export * from './HeaderWithSearch'
 export * from './NavBar'

@@ -41,7 +41,7 @@ export const NavBar = ({ onSignOut }: NavBarProps) => {
         type="submit"
         rightIcon={<CustomIcon.LogOut boxSize={6} color="secondary.500" />}
         variant="ghost"
-        fontFamily="urbana"
+        fontFamily="heading"
         fontSize={16}
         color="text"
         _hover={{

@@ -11,11 +11,13 @@ const solid = defineStyle({
 
 const ghost = defineStyle({
   color: 'text',
+  textDecoration: 'underline',
 
   _hover: {
     color: 'primary.600',
     _disabled: {
       color: 'shading.300',
+      opacity: 1,
     },
   },
   _active: {
@@ -27,6 +29,31 @@ const ghost = defineStyle({
   },
 })
 
+const ghostBlue = defineStyle({
+  color: 'secondary.500',
+  textDecoration: 'underline',
+
+  _hover: {
+    color: 'secondary.700',
+    _disabled: {
+      color: 'shading.300',
+      opacity: 1,
+    },
+  },
+  _active: {
+    color: 'secondary.600',
+  },
+  _disabled: {
+    color: 'shading.300',
+    opacity: 1,
+  },
+})
+
+const ghostBlueAlt = defineStyle({
+  ...ghostBlue,
+  fontFamily: 'heading',
+})
+
 export const buttonTheme = defineStyleConfig({
-  variants: { solid, ghost },
+  variants: { solid, ghost, ghostBlue, ghostBlueAlt },
 })
