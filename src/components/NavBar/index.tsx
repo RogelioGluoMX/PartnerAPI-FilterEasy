@@ -1,5 +1,5 @@
 import FilterEasyLogo from '@assets/logos/filtereasy-logo-2x.png'
-import { Button, Flex, HStack, Image, useTheme } from '@chakra-ui/react'
+import { Button, Flex, HStack, Image } from '@chakra-ui/react'
 import { NavLink } from 'react-router-dom'
 import { CustomIcon } from '../CustomIcon'
 
@@ -13,8 +13,6 @@ export type NavBarProps = {
 }
 
 export const NavBar = ({ onSignOut }: NavBarProps) => {
-  const theme = useTheme()
-
   return (
     <Flex justify="space-between" align="center" py={3}>
       <HStack as="nav" spacing={{ base: 4, md: 12 }}>
@@ -27,11 +25,9 @@ export const NavBar = ({ onSignOut }: NavBarProps) => {
           <NavLink
             key={index}
             to={url}
-            style={({ isActive }) => ({
-              fontSize: 18,
-              fontWeight: isActive ? '700' : '400',
-              color: isActive ? theme.colors.primary['600'] : 'black',
-            })}
+            className={({ isActive }) =>
+              isActive ? 'menu-button active' : 'menu-button'
+            }
           >
             {label}
           </NavLink>
@@ -39,14 +35,10 @@ export const NavBar = ({ onSignOut }: NavBarProps) => {
       </HStack>
       <Button
         type="submit"
-        rightIcon={<CustomIcon.LogOut boxSize={6} color="secondary.500" />}
+        rightIcon={<CustomIcon.LogOut boxSize={4} color="secondary.500" />}
         variant="ghost"
-        fontFamily="heading"
         fontSize={16}
-        color="text"
-        _hover={{
-          color: 'primary.500',
-        }}
+        textDecoration="none"
         onClick={onSignOut}
       >
         Log Out
