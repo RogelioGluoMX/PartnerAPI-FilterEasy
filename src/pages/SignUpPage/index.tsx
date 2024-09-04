@@ -7,76 +7,23 @@ import {
   Heading,
   useToast,
   VStack,
-  Input
 } from '@chakra-ui/react'
-import { Alert, FormInput, PasswordRequirementsList } from '@components'
+import {
+  Alert,
+  FormInput,
+  PasswordRequirementsList,
+  RestrictedScreen,
+} from '@components'
 import { useValidatePassword } from '@hooks'
 import { getErrorMessage } from '@utils'
-import { signUp, confirmSignUp, type ConfirmSignUpInput, type SignUpInput } from 'aws-amplify/auth'
-import { useState, useRef, type FormEvent } from 'react'
+import {
+  confirmSignUp,
+  signUp,
+  type ConfirmSignUpInput,
+  type SignUpInput,
+} from 'aws-amplify/auth'
+import { useRef, useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-
-const validUsername = "admin"
-const validPassword = "admin"
-
-const AuthenticationScreen = ({ onAuthSuccess }: { onAuthSuccess: () => void }) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState<string | undefined>(undefined)
-
-  const handleLogin = () => {
-    if (username === validUsername && password === validPassword) {
-      onAuthSuccess()
-    } else {
-      setError('Incorrect username or password.')
-    }
-  }
-
-  return (
-    <Box
-      position="fixed"
-      top="0"
-      left="0"
-      width="100%"
-      height="100%"
-      backgroundColor="rgba(0, 0, 0, 0.8)"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      zIndex="1000"
-    >
-      <Card width="300px">
-        <CardHeader>
-          <Heading size="md">Restricted Access</Heading>
-        </CardHeader>
-        <CardBody>
-          <VStack spacing={4}>
-            <Input
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <Input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <Button onClick={handleLogin}>Login</Button>
-            {error && (
-              <Alert
-                description={error}
-                status="error"
-                onClose={() => setError(undefined)}
-              />        
-            )}
-          </VStack>
-        </CardBody>
-      </Card>
-    </Box>
-  )
-}
-
 
 interface SignUpFormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement
@@ -104,11 +51,20 @@ export const SignUpPage = () => {
   const [confirmationCode, setConfirmationCode] = useState('')
   const formRef = useRef<HTMLFormElement>(null)
 
+  // Restricted Access Screen
+  if (!isAuthenticated)
+    return <RestrictedScreen onAuthSuccess={() => setIsAuthenticated(true)} />
 
-  const handleSignUp = async ({ password, email }: { password: string; email: string }) => {
+  const handleSignUp = async ({
+    password,
+    email,
+  }: {
+    password: string
+    email: string
+  }) => {
     try {
       await signUp({
-        username: email, 
+        username: email,
         password,
         attributes: {
           email,
@@ -116,7 +72,7 @@ export const SignUpPage = () => {
       } as SignUpInput) // Cast to SignUpInput to satisfy TypeScript
       toast({
         title: 'Sign Up Successful',
-        description: "Check your email for the confirmation code.",
+        description: 'Check your email for the confirmation code.',
         variant: 'solid',
         position: 'top',
         status: 'success',
@@ -131,15 +87,15 @@ export const SignUpPage = () => {
 
   const handleConfirmSignUp = async () => {
     const input: ConfirmSignUpInput = {
-      username: email, 
+      username: email,
       confirmationCode,
     }
-  
+
     try {
-      await confirmSignUp(input) 
+      await confirmSignUp(input)
       toast({
         title: 'Account Confirmed',
-        description: "Your account has been confirmed successfully.",
+        description: 'Your account has been confirmed successfully.',
         variant: 'solid',
         position: 'top',
         status: 'success',
@@ -194,95 +150,86 @@ export const SignUpPage = () => {
   const isPasswordMatch = confirmPassword === password
 
   return (
-    <>
-      {!isAuthenticated && (
-        <AuthenticationScreen onAuthSuccess={() => setIsAuthenticated(true)} />
-      )}
-      {isAuthenticated && (      
-          <Card mt={12}>
-              <CardHeader p={8} pb={2}>
-                <Heading as="h3" size="md" lineHeight={7}>
-                  {isConfirming ? 'Confirm Your Account' : 'Sign Up'}
-                </Heading>
-              </CardHeader>
-              <CardBody p={8} pt={6}>
-                <form onSubmit={handleSubmit} ref={formRef} autoComplete="off">
-                  <VStack spacing={4}>
-                    {!isConfirming && (
-                      <>
-                        <FormInput
-                          type="email"
-                          name="email"
-                          label="Email Address"
-                          placeholder="Enter your Email"
-                          isRequired
-                        />                
-                        <FormInput
-                          type="password"
-                          name="password"
-                          label="Password"
-                          placeholder="Enter your Password"
-                          onChangeText={handlePasswordChange}
-                          isRequired
-                        />
-                        <Box alignSelf={'flex-start'}>
-                          <Heading as="h6" size="xs">
-                            Your Password must meet the following requirements:
-                          </Heading>
-                          <PasswordRequirementsList state={passwordState} />
-                        </Box>
-                        <FormInput
-                          type="password"
-                          name="confirmPassword"
-                          label="Confirm Password"
-                          placeholder="Confirm your Password"
-                          onChangeText={handlePasswordConfirmChange}
-                          isInvalid={!isPasswordMatch}
-                          isRequired
-                        />
-                      </>
-                    )}
+    <Card mt={12}>
+      <CardHeader p={8} pb={2}>
+        <Heading as="h3" size="md" lineHeight={7}>
+          {isConfirming ? 'Confirm Your Account' : 'Sign Up'}
+        </Heading>
+      </CardHeader>
+      <CardBody p={8} pt={6}>
+        <form onSubmit={handleSubmit} ref={formRef} autoComplete="off">
+          <VStack spacing={4}>
+            {!isConfirming && (
+              <>
+                <FormInput
+                  type="email"
+                  name="email"
+                  label="Email Address"
+                  placeholder="Enter your Email"
+                  isRequired
+                />
+                <FormInput
+                  type="password"
+                  name="password"
+                  label="Password"
+                  placeholder="Enter your Password"
+                  onChangeText={handlePasswordChange}
+                  isRequired
+                />
+                <Box alignSelf={'flex-start'}>
+                  <Heading as="h6" size="xs">
+                    Your Password must meet the following requirements:
+                  </Heading>
+                  <PasswordRequirementsList state={passwordState} />
+                </Box>
+                <FormInput
+                  type="password"
+                  name="confirmPassword"
+                  label="Confirm Password"
+                  placeholder="Confirm your Password"
+                  onChangeText={handlePasswordConfirmChange}
+                  isInvalid={!isPasswordMatch}
+                  isRequired
+                />
+              </>
+            )}
 
-                    {isConfirming && (
-                      <FormInput
-                        type="text"
-                        name="confirmationCode"
-                        label="Confirmation Code"
-                        placeholder="Enter the confirmation code"
-                        onChangeText={handleConfirmationCodeChange}
-                        isRequired
-                      />
-                    )}
+            {isConfirming && (
+              <FormInput
+                type="text"
+                name="confirmationCode"
+                label="Confirmation Code"
+                placeholder="Enter the confirmation code"
+                onChangeText={handleConfirmationCodeChange}
+                isRequired
+              />
+            )}
 
-                    {error && (
-                      <Alert
-                        description={error}
-                        status="error"
-                        onClose={() => setError(undefined)}
-                      />
-                    )}
+            {error && (
+              <Alert
+                description={error}
+                status="error"
+                onClose={() => setError(undefined)}
+              />
+            )}
 
-                    <Button type="submit" width="full" isLoading={isLoading}>
-                      {isConfirming ? 'Confirm Code' : 'Sign Up'}
-                    </Button>
+            <Button type="submit" width="full" isLoading={isLoading}>
+              {isConfirming ? 'Confirm Code' : 'Sign Up'}
+            </Button>
 
-                    {isConfirming && (
-                      <Button
-                        variant="link"
-                        colorScheme="text"
-                        textDecoration="underline"
-                        onClick={() => setIsConfirming(false)}
-                      >
-                        Back to Sign Up
-                      </Button>
-                    )}
-                  </VStack>
-                </form>
-              </CardBody>
-            </Card>
-      )}
-    </>
-
-    
+            {isConfirming && (
+              <Button
+                variant="link"
+                colorScheme="text"
+                textDecoration="underline"
+                onClick={() => setIsConfirming(false)}
+              >
+                Back to Sign Up
+              </Button>
+            )}
+          </VStack>
+        </form>
+      </CardBody>
+    </Card>
   )
 }
