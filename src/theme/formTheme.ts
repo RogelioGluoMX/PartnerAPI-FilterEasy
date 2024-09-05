@@ -7,7 +7,7 @@ const { definePartsStyle, defineMultiStyleConfig } =
 const baseStyle = definePartsStyle({
   container: {
     label: {
-      fontFamily: `'urbana', sans-serif`,
+      fontFamily: 'heading',
       fontSize: '1rem',
       lineHeight: '1.375rem',
     },

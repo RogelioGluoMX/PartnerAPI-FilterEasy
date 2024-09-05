@@ -151,7 +151,7 @@ export const PDF = () => {
         <canvas ref={canvasRef} style={{ display: 'none' }} />
         <Button 
         type="submit"
-        fontFamily="urbana"
+        fontFamily="heading"
         fontSize={16}
         colorScheme="green"
         _hover={{

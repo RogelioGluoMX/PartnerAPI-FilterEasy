@@ -81,12 +81,9 @@ export const WavesFilters = ({
       {/* Toggle and Results */}
       <Flex justify="space-between">
         <Button
-          variant="ghost"
-          fontFamily="urbana"
+          variant="ghostBlueAlt"
           fontSize={20}
-          color="secondary.500"
           rightIcon={<FilterAltOutlined fontSize="small" />}
-          textDecoration={'underline'}
           onClick={toggleFiltersSection}
         >
           {isFiltersSectionOpen ? 'Hide Filters' : 'Show Filters'}
@@ -147,8 +144,6 @@ export const WavesFilters = ({
             <Button
               type="reset"
               variant="ghost"
-              color="text"
-              textDecoration={'underline'}
               onClick={handleFiltersClearAll}
             >
               Clear All
