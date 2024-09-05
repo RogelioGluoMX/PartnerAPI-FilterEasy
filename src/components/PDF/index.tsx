@@ -42,20 +42,20 @@ export const PDF = () => {
   const generatePdf  = async () => {
     var doc = new jsPDF('p', 'mm', [279, 216]);
     doc.setFont("MyriadPro-Bold");
-    var head = [['', '', '', '']];
+    var head = [['', '', '', '','']];
     var body = [
-      ["1", '20x20x1', 'Essential', 'BT108.01200200'],
-      ["1", '20x25x1', 'Essential', 'BT108.01200250'],
-      ["","","",""],
-      ["","","",""],
-      ["","","",""],
-      ["","","",""],
-      ["","","",""],
-      ["","","",""],
-      ["","","",""],
-      ["","","",""],
-      ["","","",""],
-      ["","","",""]
+      ["1", '20x20x1', 'Essential', 'BT108.01200200','AMFBB41A1'],
+      ["1", '20x25x1', 'Essential', 'BT108.01200250','AMFBB41A1'],
+      ["","","","",""],
+      ["","","","",""],
+      ["","","","",""],
+      ["","","","",""],
+      ["","","","",""],
+      ["","","","",""],
+      ["","","","",""],
+      ["","","","",""],
+      ["","","","",""],
+      ["","","","",""],
     ];
 
     const options: AutoTableOptions = {
@@ -98,7 +98,7 @@ export const PDF = () => {
     const finalY = (doc as any).lastAutoTable?.finalY || 10;
     doc.addImage(Footer2.FOOTER2_IMG, "JPEG", 6, finalY + 5,204,70);
 
-    const logoBase64 = await fetchImageAsBase64("https://fe-dev-logo-store-bucket.s3.amazonaws.com/logos/test12_1724800015007.jpeg");
+    const logoBase64 = await fetchImageAsBase64("https://fe-dev-logo-store-bucket.s3.amazonaws.com/logos/fe12logo_bottom_1724951872369.jpeg");
     doc.addImage(logoBase64, "JPEG", 85,19,70,40);
     doc.addImage(Table.TABLE_IMG, "JPEG", 6,6,59,75);
 
