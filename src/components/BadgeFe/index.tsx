@@ -1,5 +1,5 @@
 import { Badge, BadgeProps } from '@chakra-ui/react'
-import { type Filters } from '../WavesFilters'
+import { type Filters } from '../SearchFilters'
 
 export const BadgeFE = ({
   status,

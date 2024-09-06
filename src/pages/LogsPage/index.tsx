@@ -2,14 +2,14 @@ import { Container, VStack } from '@chakra-ui/react'
 import {
   type Filters,
   HeaderWithSearch,
+  type Log,
+  LogsTable,
   NoMatches,
   Pagination,
   SearchFilters,
-  type Wave,
-  WavesTable,
 } from '@components'
 import { useFilterParams } from '@hooks'
-import feWavesData from '../../data/fe-waves-data.json'
+import feLogsData from '../../data/fe-logs-data.json'
 
 const defaultFilters: Filters = {
   fromDate: '',
@@ -18,10 +18,10 @@ const defaultFilters: Filters = {
   entriesPerPage: 50,
 }
 
-const waves = feWavesData as Wave[]
-const entriesTotal = 353
+const logs = feLogsData as Log[]
+const entriesTotal = 571
 
-export const WavesPage = () => {
+export const LogsPage = () => {
   const { params, onFilter, onPageChange, onSearch } = useFilterParams(
     defaultFilters,
     (flattenedParams) => {
@@ -33,17 +33,17 @@ export const WavesPage = () => {
   return (
     <Container maxW="container.xl" pt={7} pb={12}>
       <VStack align={'stretch'} spacing={6}>
-        <HeaderWithSearch title="Waves" onSearch={onSearch} />
+        <HeaderWithSearch title="Logs" onSearch={onSearch} />
         <SearchFilters
-          type="waves"
+          type="logs"
           defaultValues={defaultFilters}
           onFilter={onFilter}
-          stats={{ entriesTotal, page: params.page, wavesCount: waves.length }}
+          stats={{ entriesTotal, page: params.page, wavesCount: logs.length }}
         />
 
-        {waves.length > 0 ? (
+        {logs.length > 0 ? (
           <>
-            <WavesTable waves={waves} />
+            <LogsTable logs={logs} />
             <Pagination
               currentPage={params.page}
               entriesPerPage={params.filters.entriesPerPage}

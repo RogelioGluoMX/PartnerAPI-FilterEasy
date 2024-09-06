@@ -21,10 +21,14 @@ interface SearchForm extends HTMLFormElement {
 }
 
 export type HeaderWithSearchProps = {
+  title: string
   onSearch: (query: string) => void
 }
 
-export const HeaderWithSearch = ({ onSearch }: HeaderWithSearchProps) => {
+export const HeaderWithSearch = ({
+  title,
+  onSearch,
+}: HeaderWithSearchProps) => {
   const formRef = useRef<SearchForm | null>(null)
 
   const handleSearchSubmit = (event: FormEvent<SearchForm>) => {
@@ -41,7 +45,7 @@ export const HeaderWithSearch = ({ onSearch }: HeaderWithSearchProps) => {
 
   return (
     <Flex justify="space-between">
-      <Heading>Waves</Heading>
+      <Heading>{title}</Heading>
       <Box>
         <form onSubmit={handleSearchSubmit} ref={formRef}>
           <FormControl>

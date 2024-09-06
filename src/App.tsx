@@ -1,7 +1,7 @@
 import { useAuthenticator } from '@aws-amplify/ui-react'
-import { Heading } from '@chakra-ui/react'
 import { AdminLayout, AuthenticationLayout } from '@layouts'
 import {
+  LogsPage,
   PasswordResetPage,
   PDFPage,
   SignInPage,
@@ -29,7 +29,7 @@ function App() {
           <Route path="/pdf" element={<PDFPage />} />
           <Route path="/waves/:id" element={<WavesDetailPage />} />
           <Route path="/waves" element={<WavesPage />} />
-          <Route path="/logs" element={<Heading>Logs</Heading>} />
+          <Route path="/logs" element={<LogsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
