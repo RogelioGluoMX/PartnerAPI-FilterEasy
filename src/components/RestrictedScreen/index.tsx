@@ -43,7 +43,7 @@ export const RestrictedScreen = ({ onAuthSuccess }: RestrictedScreenProps) => {
     setIsLoading(true)
     setError(undefined)
 
-    const form = event.currentTarget as AuthForm
+    const form = event.currentTarget
     const { username, password } = form.elements
 
     try {

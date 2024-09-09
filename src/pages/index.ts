@@ -1,7 +1,7 @@
+export * from './LogsPage'
 export * from './PasswordResetPage'
+export * from './PDFPage'
 export * from './SignInPage'
 export * from './SignUpPage'
 export * from './TodosPage'
 export * from './WavesPage'
-export * from './PDFPage'
-

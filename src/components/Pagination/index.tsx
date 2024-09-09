@@ -6,13 +6,15 @@ import { useCallback } from 'react'
 
 export type PaginationProps = {
   currentPage: number
-  totalPages: number
+  entriesPerPage: number
+  totalEntries: number
   onPageChange: PaginationButtonProps['onPageChange']
 }
 
 export const Pagination = ({
   currentPage,
-  totalPages,
+  entriesPerPage,
+  totalEntries,
   onPageChange,
 }: PaginationProps) => {
   const maxButtons = 5
@@ -20,6 +22,8 @@ export const Pagination = ({
   const sideButtons = maxButtons - 1 // 1 separator on each side at the time
   const middleButtons = maxButtons - separators
   const separator = -1
+
+  const totalPages = Math.floor(totalEntries / entriesPerPage) + 1
 
   const getRange = (count: number, startFrom = 1) =>
     Array.from({ length: count }, (_, index) => startFrom + index)

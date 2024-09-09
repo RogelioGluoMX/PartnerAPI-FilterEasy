@@ -6,17 +6,16 @@ import {
   FormLabel,
   Input,
   Select,
-  Text,
+  useDisclosure,
   VStack,
 } from '@chakra-ui/react'
-import { type Wave } from '@components'
-import FilterAltOutlined from '@mui/icons-material/FilterAltOutlined'
-import { FormEvent, useState } from 'react'
+import { FiltersHeader, Stats, type Wave } from '@components'
+import { FormEvent } from 'react'
 
 interface FiltersFormElements extends HTMLFormControlsCollection {
   fromDate: HTMLInputElement
   toDate: HTMLInputElement
-  status: HTMLInputElement
+  status?: HTMLInputElement
   entriesPerPage: HTMLInputElement
 }
 
@@ -27,33 +26,25 @@ interface FiltersForm extends HTMLFormElement {
 export type Filters = {
   fromDate: string
   toDate: string
-  status: Wave['status']
+  status?: Wave['status']
   entriesPerPage: number
 }
 
-export type Stats = {
-  entriesTotal: number
-  page: number
-  wavesCount: number
-}
-
-export type WavesFiltersProps = {
+export type SearchFiltersProps = {
   defaultValues: Filters
   stats: Stats
+  type: 'logs' | 'waves'
   onFilter: (filters: Filters) => void
 }
 
-export const WavesFilters = ({
+export const SearchFilters = ({
   defaultValues,
   stats,
+  type,
   onFilter,
-}: WavesFiltersProps) => {
-  const [isFiltersSectionOpen, setIsFiltersSectionOpen] = useState(false)
+}: SearchFiltersProps) => {
+  const { isOpen, onToggle } = useDisclosure()
   const { fromDate, toDate, status, entriesPerPage } = defaultValues
-
-  const toggleFiltersSection = () => {
-    setIsFiltersSectionOpen((prevState) => !prevState)
-  }
 
   const handleFiltersSubmit = (event: FormEvent<FiltersForm>) => {
     event.preventDefault()
@@ -63,7 +54,7 @@ export const WavesFilters = ({
     onFilter({
       fromDate: fromDate.value,
       toDate: toDate.value,
-      status: status.value as Filters['status'],
+      status: status?.value as Filters['status'],
       entriesPerPage: +entriesPerPage.value,
     })
   }
@@ -72,31 +63,19 @@ export const WavesFilters = ({
     onFilter(defaultValues)
   }
 
-  const rangeBottom = 1 + Number(entriesPerPage) * (stats.page - 1)
-  const rangeTop = rangeBottom + stats.wavesCount - 1
-  const totalEntries = stats.entriesTotal.toLocaleString()
+  const isWaves = type === 'waves'
 
   return (
     <form onSubmit={handleFiltersSubmit}>
       {/* Toggle and Results */}
-      <Flex justify="space-between">
-        <Button
-          variant="ghostBlueAlt"
-          fontSize={20}
-          rightIcon={<FilterAltOutlined fontSize="small" />}
-          onClick={toggleFiltersSection}
-        >
-          {isFiltersSectionOpen ? 'Hide Filters' : 'Show Filters'}
-        </Button>
-        {!!stats.wavesCount && (
-          <Text>
-            Showing <Text as="b">{rangeBottom}</Text> to{' '}
-            <Text as="b">{rangeTop}</Text> of {totalEntries} entries
-          </Text>
-        )}
-      </Flex>
+      <FiltersHeader
+        isOpen={isOpen}
+        onToggle={onToggle}
+        stats={stats}
+        entriesPerPage={+entriesPerPage}
+      />
 
-      <Collapse in={isFiltersSectionOpen}>
+      <Collapse in={isOpen}>
         <VStack align="stretch" spacing={4} overflow="hidden" pt={4}>
           {/* Fields */}
           <Flex columnGap={5}>
@@ -109,6 +88,7 @@ export const WavesFilters = ({
                 defaultValue={fromDate}
               />
             </FormControl>
+
             <FormControl>
               <FormLabel>To</FormLabel>
               <Input
@@ -118,14 +98,18 @@ export const WavesFilters = ({
                 defaultValue={toDate}
               />
             </FormControl>
-            <FormControl>
-              <FormLabel>Status</FormLabel>
-              <Select name="status" bg="white" defaultValue={status}>
-                <option>All</option>
-                <option>Available</option>
-                <option>Downloaded</option>
-              </Select>
-            </FormControl>
+
+            {isWaves && (
+              <FormControl>
+                <FormLabel>Status</FormLabel>
+                <Select name="status" bg="white" defaultValue={status}>
+                  <option>All</option>
+                  <option>Available</option>
+                  <option>Downloaded</option>
+                </Select>
+              </FormControl>
+            )}
+
             <FormControl>
               <FormLabel>Show per page</FormLabel>
               <Select
